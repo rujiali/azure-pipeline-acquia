@@ -1,0 +1,13 @@
+name: GraphQL Views
+type: module
+description: 'Adds support for views.'
+package: GraphQL
+# core: 8.x
+dependencies:
+  - graphql_core
+  - views
+# Information added by Drupal.org packaging script on 2018-09-24
+version: '8.x-1.0-beta1'
+core: '8.x'
+project: 'graphql_views'
+datestamp: 1537770786
