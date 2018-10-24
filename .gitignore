@@ -2,6 +2,6 @@
 docroot/files
 docroot/sites/*/files
 docroot/sites/*/private
-./vendor
+vendor
 .idea
 acquiacli.yml

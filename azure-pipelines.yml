@@ -28,5 +28,5 @@ steps:
     sudo mv composer.phar /usr/local/bin/composer
     composer --version
   displayName: 'Update composer'
-- script: composer install
+- script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
