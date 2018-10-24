@@ -1,0 +1,14 @@
+/* TODO: Should this use opacity in order to support non-white backgrounds? */
+.scheduled-transition.past {
+    color: lightgrey;
+}
+
+.scheduled-transition label {
+    display: inline;
+    font-weight: normal;
+}
+
+.scheduled-transition label::before,
+.scheduled-transition label::after {
+    content: " ";
+}

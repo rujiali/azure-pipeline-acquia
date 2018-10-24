@@ -1,0 +1,11 @@
+entity_browser_enhanced.multiselect:
+  css:
+    component:
+      enhancers/multiselect/css/entity_browser_enhanced.multiselect.css:
+        minified: true
+  js:
+    enhancers/multiselect/js/entity_browser_enhanced.multiselect.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+    - core/underscore

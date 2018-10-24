@@ -1,0 +1,14 @@
+paragraphs_edit.edit_form:
+  route_name: paragraphs_edit.edit_form
+  group: paragraph
+  title: Edit
+
+paragraphs_edit.clone_form:
+  route_name: paragraphs_edit.clone_form
+  group: paragraph
+  title: Clone
+
+paragraphs_edit.delete_form:
+  route_name: paragraphs_edit.delete_form
+  group: paragraph
+  title: Delete

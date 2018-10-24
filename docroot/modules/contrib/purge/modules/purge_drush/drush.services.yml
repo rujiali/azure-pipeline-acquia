@@ -1,0 +1,6 @@
+services:
+  purge_drush.commands:
+    class: \Drupal\purge_drush\Commands\PurgeDrushCommands
+    arguments: ['@purge.logger', '@purge.invalidation.factory', '@purge.processors', '@purge.purgers', '@purge.queue', '@purge.queue.stats', '@purge.queuers', '@purge.diagnostics']
+    tags:
+      - { name: drush.command }

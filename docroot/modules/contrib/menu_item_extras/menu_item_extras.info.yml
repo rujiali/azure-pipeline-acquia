@@ -1,0 +1,19 @@
+name: Menu Item Extras
+type: module
+description: "Provide an additional custom fields which can be used on Menu link"
+package: Menu
+# core: 8.x
+dependencies:
+  - drupal:block
+  - drupal:ckeditor
+  - drupal:menu_link_content
+  - drupal:system (>=8.2.0)
+  - drupal:text
+simplytest_dependencies:
+  - menu_item_extras:mie_demo_base
+
+# Information added by Drupal.org packaging script on 2018-07-27
+version: '8.x-2.3'
+core: '8.x'
+project: 'menu_item_extras'
+datestamp: 1532680685

@@ -1,0 +1,17 @@
+{
+    "name": "drupal/purge_drush",
+    "description": "Administrative Drush commands for Purge.",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/purge": "~3.0"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9"
+            }
+        }
+    }
+}

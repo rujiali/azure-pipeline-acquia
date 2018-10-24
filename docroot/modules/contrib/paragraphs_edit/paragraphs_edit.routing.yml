@@ -1,0 +1,42 @@
+paragraphs_edit.edit_form:
+  path: '/paragraphs_edit/{root_parent_type}/{root_parent}/paragraphs/{paragraph}/edit'
+  defaults:
+    _entity_form: 'paragraph.entity_edit'
+  requirements:
+    _entity_access: 'root_parent.update'
+    root_parent: \d+
+  options:
+    _admin_route: TRUE
+    parameters:
+      root_parent:
+        type: 'entity:{root_parent_type}'
+      paragraph:
+        type: 'entity:paragraph'
+
+paragraphs_edit.clone_form:
+  path: '/paragraphs_edit/{root_parent_type}/{root_parent}/paragraphs/{paragraph}/clone'
+  defaults:
+    _entity_form: 'paragraph.entity_clone'
+  requirements:
+    _entity_access: 'paragraph.update'
+  options:
+    _admin_route: TRUE
+    parameters:
+      root_parent:
+        type: 'entity:{root_parent_type}'
+      paragraph:
+        type: 'entity:paragraph'
+
+paragraphs_edit.delete_form:
+  path: '/paragraphs_edit/{root_parent_type}/{root_parent}/paragraphs/{paragraph}/delete'
+  defaults:
+    _entity_form: 'paragraph.entity_delete'
+  requirements:
+    _entity_access: 'root_parent.update'
+  options:
+    _admin_route: TRUE
+    parameters:
+      root_parent:
+        type: 'entity:{root_parent_type}'
+      paragraph:
+        type: 'entity:paragraph'

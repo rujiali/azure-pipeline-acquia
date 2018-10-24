@@ -1,0 +1,10 @@
+- hosts: all
+
+  pre_tasks:
+    - import_tasks: setup.yml
+
+  roles:
+    - role_under_test
+
+  post_tasks:
+    - include_tasks: debug.yml

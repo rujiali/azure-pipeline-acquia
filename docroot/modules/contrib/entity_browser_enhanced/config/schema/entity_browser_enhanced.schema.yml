@@ -1,0 +1,7 @@
+entity_browser_enhanced.widgets:
+  type: mapping
+  label: 'Configuration for entity browser enhanced'
+  mapping:
+    uuid:
+      type: string
+      label: 'Configuration view widget selector'

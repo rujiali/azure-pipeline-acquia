@@ -1,0 +1,7 @@
+auto_entitylabel.settings:
+  path: '/admin/structure/auto-label'
+  defaults:
+    _controller: 'Drupal\auto_entitylabel\Controller\AutoEntityLabelController::getContentTypesItems'
+    _title: 'Automatic label'
+  requirements:
+    _permission: 'administer site configuration'

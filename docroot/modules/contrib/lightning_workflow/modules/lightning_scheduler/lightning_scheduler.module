@@ -1,0 +1,197 @@
+<?php
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Extension\Extension;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\lightning_scheduler\TransitionSet;
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function lightning_scheduler_library_info_alter(array &$libraries, $extension) {
+  if ($extension === 'seven') {
+    $dir = drupal_get_path('module', 'lightning_scheduler');
+
+    $libraries['lightning_scheduler.widget'] = [
+      'css' => [
+        'theme' => [
+          // @TODO This will break if the site is running in a subdirectory.
+          "/$dir/css/component.seven.css" => [],
+        ],
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_system_info_alter().
+ */
+function lightning_scheduler_system_info_alter(array &$info, Extension $extension, $type) {
+  if ($type === 'theme' && $extension->getName() === 'seven') {
+    $info['libraries-extend']['lightning_scheduler/widget'][] = 'seven/lightning_scheduler.widget';
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function lightning_scheduler_cron() {
+  $field_map = Drupal::service('entity_field.manager')->getFieldMap();
+
+  /** @var \Drupal\lightning_scheduler\TransitionManager $transition_manager */
+  $transition_manager = Drupal::service('lightning_scheduler.transition_manager');
+
+  $start = new DrupalDateTime('now', DateTimeItemInterface::STORAGE_TIMEZONE);
+  $now = Drupal::time()->getRequestTime();
+  $start->setTimestamp($now);
+
+  foreach ($field_map as $entity_type_id => $fields) {
+    if (isset($fields['scheduled_transition_state'], $fields['scheduled_transition_date'])) {
+      $transition_manager->process($entity_type_id, $start);
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function lightning_scheduler_field_widget_moderation_state_default_form_alter(array &$element, FormStateInterface $form_state, array $context) {
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  $entity = $context['items']->getEntity();
+
+  // The entity must have the proper fields.
+  $has_fields = $entity->hasField('scheduled_transition_date') && $entity->hasField('scheduled_transition_state');
+  if (! $has_fields) {
+    return;
+  }
+
+  /** @var \Drupal\lightning_scheduler\TransitionManager $transition_manager */
+  $transition_manager = Drupal::service('lightning_scheduler.transition_manager');
+  $states = $transition_manager->getStates($entity);
+
+  // The latest revision, if there is one, is the canonical source of truth
+  // regarding scheduled transitions.
+  $latest_revision = Drupal::service('content_moderation.moderation_information')
+    ->getLatestRevision(
+      $entity->getEntityTypeId(),
+      $entity->id()
+    ) ?: $entity;
+
+  $transition_set = new TransitionSet(
+    $latest_revision->get('scheduled_transition_date'),
+    $latest_revision->get('scheduled_transition_state')
+  );
+
+  $element['scheduled_transitions'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'TransitionSet',
+    '#attributes' => [
+      'states' => Json::encode($states),
+      'since' => date('c', Drupal::state()->get('system.cron_last')),
+    ],
+    '#attached' => [
+      'library' => ['lightning_scheduler/widget'],
+    ],
+    'data' => [
+      '#type' => 'hidden',
+      '#element_validate' => [
+        [
+          get_class($transition_manager),
+          'validate',
+        ],
+      ],
+      '#default_value' => $transition_set->toJSON(),
+      '#process' => [
+        'lightning_scheduler_process_component_input',
+      ],
+    ],
+  ];
+
+  // If in development mode, we should be able to schedule transitions in
+  // increments of seconds.
+  if (Drupal::moduleHandler()->moduleExists('lightning_dev')) {
+    $element['scheduled_transitions']['#attributes']['step'] = 1;
+  }
+}
+
+/**
+ * #process callback for the scheduler component's input element.
+ *
+ * @param array $element
+ *   The unprocessed element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed element.
+ */
+function lightning_scheduler_process_component_input(array $element, FormStateInterface $form_state) {
+  $key = $element['#parents'];
+  if ($form_state->hasValue($key)) {
+    $element['#default_value'] = $form_state->getValue($key);
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function lightning_scheduler_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+  $moderation_info = Drupal::service('content_moderation.moderation_information');
+
+  $migrations = Drupal::service('lightning_scheduler.migrator')->getMigrations();
+
+  if ($moderation_info->canModerateEntitiesOfEntityType($entity_type)) {
+    $fields['scheduled_transition_date'] = BaseFieldDefinition::create('datetime')
+      ->setDisplayConfigurable('view', FALSE)
+      ->setDisplayConfigurable('form', FALSE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+    $fields['scheduled_transition_state'] = BaseFieldDefinition::create('string')
+      ->setDisplayConfigurable('view', FALSE)
+      ->setDisplayConfigurable('form', FALSE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+    // If the entity type has not yet been migrated, we need to continue to
+    // define the base fields from the 1.x version.
+    if (in_array($entity_type->id(), $migrations, TRUE)) {
+      $fields['scheduled_publication'] = BaseFieldDefinition::create('datetime')
+        ->setDisplayConfigurable('view', FALSE)
+        ->setDisplayConfigurable('form', FALSE)
+        ->setTranslatable(TRUE)
+        ->setRevisionable(TRUE);
+
+      $fields['scheduled_moderation_state'] = BaseFieldDefinition::create('string')
+        ->setDisplayConfigurable('view', FALSE)
+        ->setDisplayConfigurable('form', FALSE)
+        ->setTranslatable(TRUE)
+        ->setRevisionable(TRUE);
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function lightning_scheduler_entity_presave($entity) {
+  // This is a horrible hack to work around Content Moderation's opinions being
+  // a little too strong. See lightning_scheduler_update_8001().
+  if ($entity instanceof ContentEntityInterface && isset($entity->existingRevisionId)) {
+    $entity->setNewRevision(FALSE);
+    $entity->set($entity->getEntityType()->getKey('revision'), $entity->existingRevisionId);
+    unset($entity->existingRevisionId);
+  }
+}

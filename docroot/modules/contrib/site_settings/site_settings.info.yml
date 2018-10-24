@@ -1,0 +1,11 @@
+name: Site Settings and Labels
+type: module
+description: Provides a site settings entity for non-admin controlled settings and labels
+# core: 8.x
+package: Custom
+
+# Information added by Drupal.org packaging script on 2018-04-11
+version: '8.x-1.12'
+core: '8.x'
+project: 'site_settings'
+datestamp: 1523431987

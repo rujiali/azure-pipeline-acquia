@@ -1,0 +1,41 @@
+diff --git a/src/Plugin/rest/resource/RestMenuItemsResource.php b/src/Plugin/rest/resource/RestMenuItemsResource.php
+index 01ff3c9..8808ba4 100644
+--- a/src/Plugin/rest/resource/RestMenuItemsResource.php
++++ b/src/Plugin/rest/resource/RestMenuItemsResource.php
+@@ -132,6 +132,7 @@ class RestMenuItemsResource extends ResourceBase {
+    *   A HTTP Exception.
+    */
+   public function get($menu_name = NULL) {
++
+     if ($menu_name) {
+       // Setup variables.
+       $this->setup();
+@@ -164,6 +165,11 @@ class RestMenuItemsResource extends ResourceBase {
+         // Use the default sorting of menu links.
+         ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+       ];
++
++      // Module handler should be injected.
++      $moduleHandler = \Drupal::moduleHandler();
++      $moduleHandler->alter('rest_menu_items_manipulators', $manipulators);
++
+       $tree = $menu_tree->transform($tree, $manipulators);
+ 
+       // Finally, build a renderable array from the transformed tree.
+@@ -240,8 +246,6 @@ class RestMenuItemsResource extends ResourceBase {
+ 
+       $alias = $this->aliasManager->getAliasByPath("/$uri");
+ 
+-      $value = 
+-
+       $value = [
+         'key' => $item_name,
+         'title' => $org_link->getTitle(),
+@@ -256,6 +260,7 @@ class RestMenuItemsResource extends ResourceBase {
+         'enabled' => $org_link->isEnabled(),
+         'uuid' => $uuid,
+         'options' => $options,
++        'custom_properties' => $url->getOption('custom_properties'),
+       ];
+ 
+       if (!empty($item_value['below'])) {

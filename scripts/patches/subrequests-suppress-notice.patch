@@ -1,0 +1,17 @@
+diff --git a/src/Normalizer/MultiresponseJsonNormalizer.php b/src/Normalizer/MultiresponseJsonNormalizer.php
+index 8b667b2..fc9afd9 100644
+--- a/src/Normalizer/MultiresponseJsonNormalizer.php
++++ b/src/Normalizer/MultiresponseJsonNormalizer.php
+@@ -15,6 +15,12 @@ class MultiresponseJsonNormalizer implements NormalizerInterface {
+    * {@inheritdoc}
+    */
+   public function normalize($object, $format = NULL, array $context = []) {
++    // This is probably out search, and there is not true root type.
++    // Suppressing errors. simon@today.design
++    if (!isset($context['sub-content-type'])) {
++      $context['sub-content-type'] = 'node';
++    }
++
+     // Prepare the root content type header.
+     $content_type = sprintf(
+       'application/json; type=%s',

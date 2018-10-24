@@ -1,0 +1,380 @@
+{
+  "name": "rujiali/umami",
+  "description": "Umami demo",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Rujiali",
+      "email": "oasislrjjrl@gmail.com",
+      "homepage": "http://lirujia.com",
+      "role": "Application design and development"
+    }
+  ],
+  "repositories": {
+    "drupal": {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    },
+    "asset-packagist": {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
+    "simesy": {
+      "type": "vcs",
+      "url": "https://github.com/simesy/composer-locator"
+    },
+    "codesnippet": {
+      "type": "package",
+      "package": {
+        "name": "ckeditor/codesnippet",
+        "version": "4.6.2",
+        "type": "drupal-library",
+        "extra": {
+          "installer-name": "codesnippet"
+        },
+        "dist": {
+          "url": "https://download.ckeditor.com/codesnippet/releases/codesnippet_4.6.2.zip",
+          "type": "zip"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    "ckeditor.fakeobjects": {
+      "_webform": true,
+      "type": "package",
+      "package": {
+        "name": "ckeditor/fakeobjects",
+        "version": "4.6.2",
+        "type": "drupal-library",
+        "extra": {
+          "installer-name": "ckeditor.fakeobjects"
+        },
+        "dist": {
+          "url": "http://download.ckeditor.com/fakeobjects/releases/fakeobjects_4.6.2.zip",
+          "type": "zip"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    "ckeditor.image": {
+      "_webform": true,
+      "type": "package",
+      "package": {
+        "name": "ckeditor/image",
+        "version": "4.6.2",
+        "type": "drupal-library",
+        "extra": {
+          "installer-name": "ckeditor.image"
+        },
+        "dist": {
+          "url": "http://download.ckeditor.com/image/releases/image_4.6.2.zip",
+          "type": "zip"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    },
+    "ckeditor.link": {
+      "_webform": true,
+      "type": "package",
+      "package": {
+        "name": "ckeditor/link",
+        "version": "4.6.2",
+        "type": "drupal-library",
+        "extra": {
+          "installer-name": "ckeditor.link"
+        },
+        "dist": {
+          "url": "http://download.ckeditor.com/link/releases/link_4.6.2.zip",
+          "type": "zip"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    }
+  },
+  "require": {
+    "asm89/stack-cors": "^1.1",
+    "bower-asset/chosen": "1.8.0",
+    "bower-asset/dropzone": "5.1.1",
+    "ckeditor/codesnippet": "4.6.2",
+    "ckeditor/fakeobjects": "4.6.2",
+    "ckeditor/image": "4.6.2",
+    "ckeditor/link": "4.6.2",
+    "composer/installers": "^1.2",
+    "cweagans/composer-patches": "^1.6.0",
+    "dompdf/dompdf": "dev-master",
+    "drupal-composer/drupal-scaffold": "^2.2",
+    "drupal/acquia_connector": "^1.14",
+    "drupal/acquia_purge": "~1",
+    "drupal/acquia_search": "^1.14",
+    "drupal/admin_toolbar": "^1.19",
+    "drupal/auto_entitylabel": "^2",
+    "drupal/chosen": "^2",
+    "drupal/cloudflare": "~1",
+    "drupal/codesnippet": "^1.0",
+    "drupal/conditional_fields": "~1",
+    "drupal/config_ignore": "~2.1",
+    "drupal/console": "^1.0.2",
+    "drupal/consumer_image_styles": "^2.0@rc",
+    "drupal/consumers": "1.0.0-beta3",
+    "drupal/decoupled_router": "^1.0@beta",
+    "drupal/diff": "^1",
+    "drupal/dropzonejs": "^1.0@alpha",
+    "drupal/ds": "^3",
+    "drupal/editor_advanced_link": "^1.4",
+    "drupal/entity": "~1",
+    "drupal/entity_browser": "^2.0",
+    "drupal/entity_browser_enhanced": "~1",
+    "drupal/entity_print": "2.x",
+    "drupal/field_group": "~3",
+    "drupal/geolocation": "~1",
+    "drupal/graphql": "^3.0@beta",
+    "drupal/health_check": "~1",
+    "drupal/inline_entity_form": "~1.0",
+    "drupal/jsonapi": "~1",
+    "drupal/jsonapi_extras": "^2",
+    "drupal/lightning_workflow": "~2",
+    "drupal/linkit": "~5",
+    "drupal/material_admin": "^1.0@alpha",
+    "drupal/media_entity_browser": "~2",
+    "drupal/memcache": "~2",
+    "drupal/menu_item_extras": "^2.2",
+    "drupal/metatag": "1.6.0",
+    "drupal/migrate_plus": "^4.0@beta",
+    "drupal/migrate_source_csv": "^2.1",
+    "drupal/migrate_tools": "^4.0@beta",
+    "drupal/migration_tools": "~2",
+    "drupal/openapi": "^1.0@alpha",
+    "drupal/paragraphs": "^1.1",
+    "drupal/paragraphs_edit": "^2",
+    "drupal/pathauto": "^1.0",
+    "drupal/purge_cache_warmer": "~1",
+    "drupal/redirect": "~1.1",
+    "drupal/remote_stream_wrapper": "^1",
+    "drupal/rest_menu_items": "^1",
+    "drupal/restui": "^1",
+    "drupal/scheduled_updates": "^1.0@alpha",
+    "drupal/schemata": "^1.0@alpha",
+    "drupal/search_api_location": "~1",
+    "drupal/search_api_solr": "<2",
+    "drupal/simple_oauth": "^3.3",
+    "drupal/site_settings": "~1",
+    "drupal/sitemap": "~1",
+    "drupal/subrequests": "^2.0@beta",
+    "drupal/svg_image": "^1.8",
+    "drupal/swiftmailer": "^1.0@beta",
+    "drupal/views_data_export": "~1",
+    "drupal/webform": "^5",
+    "drupal/webform_rest": "dev-2.x",
+    "drupal/workbench_access": "^1.0@alpha",
+    "drupal/workbench_email": "^1.0@alpha",
+    "drupal/workbench_moderation": "^1.2",
+    "drupal/workbench_moderation_actions": "^1.0@alpha",
+    "drupal/workbench_moderation_state_access": "^1.0",
+    "drupal/youtube": "dev-1.x",
+    "drush/drush": "~9",
+    "geshi/geshi": "^1",
+    "h4cc/wkhtmltopdf-amd64": "0.12.4",
+    "mikehaertl/phpwkhtmltopdf": "~2.1",
+    "oomphinc/composer-installers-extender": "^1.1",
+    "swiftmailer/swiftmailer": "5.4.9",
+    "tecnickcom/tcpdf": "~6",
+    "typhonius/acquia_cli": "^1.0",
+    "webflo/drupal-core-strict": "8.5.6",
+    "webflo/drupal-finder": "^1.0.0",
+    "webmozart/path-util": "^2.3"
+  },
+  "require-dev": {
+    "behat/mink": "~1.7",
+    "behat/mink-goutte-driver": "~1.2",
+    "drupal/coder": "^8.2",
+    "drupal/devel": "1.x-dev",
+    "drupal/xhprof": "~1",
+    "drupal/drupal-extension": "v3.3.0",
+    "geerlingguy/drupal-vm": "~4.3",
+    "jcalderonzumba/gastonjs": "~1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
+    "integratedexperts/robo-git-artefact": "~0.2.1",
+    "integratedexperts/behat-format-progress-fail": ">=0.2.1",
+    "integratedexperts/behat-screenshot": ">=0.6.1",
+    "mikey179/vfsstream": "~1.2",
+    "mindplay/composer-locator": "dev-locate-script",
+    "symfony/css-selector": "~2.8|~3.0",
+    "phpunit/phpunit": "~7"
+  },
+  "conflict": {
+    "drupal/drupal": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "classmap": [
+      "scripts/composer/ScriptHandler.php",
+      "scripts/composer/"
+    ]
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests"
+    ]
+  },
+  "scripts": {
+    "dependency-cleanup": [ "Drupal\\composer\\ScriptHandler::dependencyCleanup" ],
+    "drupal-scaffold": "Drupal\\DrupalScaffold\\Plugin::scaffold",
+    "post-install-cmd": [ "Drupal\\composer\\ScriptHandler::buildScaffold" ],
+    "post-update-cmd": [ "Drupal\\composer\\ScriptHandler::buildScaffold" ],
+    "test-drush": [
+      "which drush",
+      "drush version",
+      "drush sa | grep \"^'\""
+    ],
+    "deploy": [
+      "@test",
+      "scripts/acquia-deploy-push-code.sh"
+    ],
+    "acquia-run-updates": [
+      "scripts/acquia-deploy-run-updates.sh"
+    ],
+    "ccex": [
+      "./scripts/drupal-sync.sh @vm --latest",
+      "drush @vm cache-rebuild",
+      "drush @vm updb -y",
+      "drush @vm config-export -y"
+    ],
+    "sync-dev": [
+      "./scripts/drupal-sync.sh @dev",
+      "./scripts/drupal-updates.sh @dev"
+    ],
+    "sync-stg": [
+      "./scripts/drupal-sync.sh @stg",
+      "./scripts/drupal-updates.sh @stg"
+    ],
+    "sync": [
+      "./scripts/drupal-sync.sh @vm",
+      "drush @vm cr",
+      "echo 'No updates or config import/export has been run locally.'"
+    ],
+    "test": [
+      "echo 'Running running static tests, use composer test-all for full tests'",
+      "composer validate",
+      "php ./vendor/bin/phpunit ./tests/unit",
+      "./vendor/bin/phpcs --runtime-set installed_paths $(pwd)/vendor/drupal/coder/coder_sniffer --runtime-set eslint_path $(pwd)/node_modules/.bin/eslint --colors -s -p"
+    ],
+    "test-func": [
+      "./scripts/test-integration.sh"
+    ],
+    "test-all": [
+      "@test",
+      "@test-func"
+    ],
+    "git-hooks": [
+      "ln -s ../../scripts/git/pre-commit.sh .git/hooks/pre-commit"
+    ],
+    "local-reindex": [
+      "./vendor/bin/drush --alias-path=./drush @vm search-api-clear acquia_search_index",
+      "./vendor/bin/drush --alias-path=./drush @vm search-api-index acquia_search_index"
+    ]
+  },
+  "scripts-descriptions": {
+    "acquia-push-branch": "* WorkSafe: Force push the current branch to the equivalent branch on Acquia.",
+    "acquia-run-updates": "* WorkSafe: Run updates on any acquia environment that matches the current branch.",
+    "deploy-prod": "* Worksafe: Sync database from Acquia prod to local VM.",
+    "ccex": "* Worksafe: Export config from canonical site in prepartion for code commit.",
+    "test": "* Worksafe: Run PHPUnit, linting, composer validation tests.",
+    "test-all": "* Worksafe: all tests."
+  },
+  "extra": {
+    "acquia": {
+      "site": "worksafe",
+      "realm": "prod",
+      "prod-branch": "master",
+      "git-remote": "worksafe@svn-24511.prod.hosting.acquia.com:worksafe.git",
+      "organisation": "668c14f9-894a-4834-82c9-a02aea28ea82",
+      "environments": {
+        "dev": { "alias": "@dev", "uuid": "37403-668c14f9-894a-4834-82c9-a02aea28ea82" },
+        "test": { "alias": "@stg", "uuid": "37404-668c14f9-894a-4834-82c9-a02aea28ea82" },
+        "staging": { "alias": "@stg", "uuid": "37404-668c14f9-894a-4834-82c9-a02aea28ea82" },
+        "ra": { "alias": "@ra", "uuid": "37405-668c14f9-894a-4834-82c9-a02aea28ea82" },
+        "prod": { "alias": "@prod", "uuid": "37402-668c14f9-894a-4834-82c9-a02aea28ea82" }
+      }
+    },
+    "installer-types": ["bower-asset", "npm-asset"],
+    "installer-paths": {
+      "docroot/core": ["type:drupal-core"],
+      "docroot/libraries/{$name}/": [
+        "type:drupal-library",
+        "vendor:bower-asset",
+        "vendor:npm-asset"
+      ],
+      "docroot/modules/contrib/{$name}": ["type:drupal-module"],
+      "docroot/profiles/contrib/{$name}": ["type:drupal-profile"],
+      "docroot/themes/contrib/{$name}": ["type:drupal-theme"],
+      "drush/contrib/{$name}": ["type:drupal-drush"]
+    },
+    "drupal-scaffold": {
+      "source": "http://cgit.drupalcode.org/drupal/plain/{path}?h={version}",
+      "excludes": [
+        "sites/default/default.services.yml",
+        "sites/default/default.settings.php",
+        "sites/example.settings.local.php",
+        "sites/example.sites.php",
+        "sites/development.services.yml"
+      ],
+      "omit-defaults": false
+    },
+    "enable-patching": true,
+    "patches": {
+      "league/oauth2-server": {
+        "Allow Acquia 440 permissions for key file": "https://www.drupal.org/files/issues/2915576-crypt-key-allow-440-do-not-test.patch"
+      },
+      "drupal/simple_oauth": {
+        "Interface errors, @see http://drupal.org/node/2941522": "https://www.drupal.org/files/issues/abstract_method_fix.patch.txt"
+      },
+      "drupal/subrequests": {
+        "Suppress error with our use of subrequests.": "./scripts/patches/subrequests-suppress-notice.patch"
+      },
+      "drupal/entity_browser": {
+        "Add media entity browser plugin": "https://www.drupal.org/files/issues/entity_browser-media-file-upload-2922885-3.patch"
+      },
+      "drupal/core": {
+        "Handling race condition when youtube module doens't have local files": "https://www.drupal.org/files/issues/valid-object-or-string-2849413-2-d8.patch",
+        "Allow custom domain for RSS link fields.": "https://www.drupal.org/files/issues/2018-07-24/2987732-allow-custom-rss-field-urls.patch"
+      },
+      "drupal/purge": {
+        "Drush 9 commands": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
+      },
+      "drupal/search_api_solr": {
+        "Solr partial words patch for Acquia": "./scripts/patches/search_api_solr-partial-words.patch"
+      },
+      "drupal/rest_menu_items": {
+        "Allow us to apply custom properties, eg from menu item fields.": "https://www.drupal.org/files/issues/2018-05-09/2959787-poor-substitute-for-jsonapi-but-allow-custom-rest-menu-item-properties.patch"
+      },
+      "drupal/geolocation": {
+        "Compatibility with search_api_location": "https://www.drupal.org/files/issues/geolocation-search_api_location-support-2907560-5.diff"
+      },
+      "drupal/linkit": {
+        "Add webform as a matcher to linkit": "https://www.drupal.org/files/issues/2018-05-09/linkit--webform-matcher.patch"
+      },
+      "drupal/metatag": {
+        "Support metatag item normalisation": "https://www.drupal.org/files/issues/2018-07-15/metatag_2945817_28.patch"
+      },
+      "drupal/jsonapi": {
+        "Support metatag item normalisation": "./scripts/patches/jsonapi-log-data-error.patch"
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "secure-http": true,
+    "preferred-install": {
+      "*": "auto"
+    }
+  }
+}

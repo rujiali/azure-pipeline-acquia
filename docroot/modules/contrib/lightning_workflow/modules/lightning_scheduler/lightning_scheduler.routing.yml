@@ -1,0 +1,7 @@
+lightning_scheduler.migrate:
+  path: '/admin/config/system/lightning/scheduler/migrate'
+  defaults:
+    _title: 'Migrate scheduled transitions'
+    _form: '\Drupal\lightning_scheduler\Form\MigrationConfirmationForm'
+  requirements:
+    _custom_access: '\Drupal\lightning_scheduler\Form\MigrationConfirmationForm::access'

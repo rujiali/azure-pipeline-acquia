@@ -1,0 +1,52 @@
+diff --git a/health_check.routing.yml b/health_check.routing.yml
+index f91f908..1aa7936 100755
+--- a/health_check.routing.yml
++++ b/health_check.routing.yml
+@@ -1,5 +1,5 @@
+ health_check.content:
+-  path: '/health'
++  path: '/api/health'
+   defaults:
+     _controller: '\Drupal\health_check\Controller\HealthController::content'
+   requirements:
+diff --git a/src/Controller/HealthController.php b/src/Controller/HealthController.php
+index b36ce71..75aec65 100755
+--- a/src/Controller/HealthController.php
++++ b/src/Controller/HealthController.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\health_check\Controller;
+ 
+ use Drupal\Core\Controller\ControllerBase;
++use Drupal\Core\Datetime\Element\Datetime;
+ use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+ use Symfony\Component\HttpFoundation\Response;
+@@ -49,8 +50,27 @@ class HealthController extends ControllerBase {
+ 
+     // Use plain response with timestamp
+     $response = new Response();
+-    $response->setContent(time());
++    $cms_hash = \Drupal::state()->get('cms_hash', 1);
++    $cms_hash_previous = \Drupal::state()->get('cms_hash_previous', 1);
++    $seconds_to_wait_for_solr_to_replicate = 60 * 3;
+ 
++    if ((time() - $cms_hash) < $seconds_to_wait_for_solr_to_replicate) {
++      // The goal here is to prevent an uncertain situation where content is
++      // here one minute, gone the next, on the frontend. Which is due to
++      // waiting for solr replication. We try to wait for the
++      // solr service to finish replicating before giving the FE a new cachebust
++      // ID. But this is not at all foolproof. If there is a lot of content
++      // being updated, then cms_hash will update once ever few minutes and we can't
++      // help serving content which may be mixed.
++      // (see worksafe_search.module).
++
++      // Note that this should all move to a custom module.
++      $response->setContent($cms_hash_previous);
++    }
++    else {
++      $response->setContent($cms_hash);
++    }
+     return $response;
+   }
++
+ }

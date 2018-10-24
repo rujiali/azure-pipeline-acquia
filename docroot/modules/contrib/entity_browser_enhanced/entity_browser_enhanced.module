@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Allows to have an enhanced entity browser.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function entity_browser_enhanced_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === "entity_browser_widgets_config_form") {
+    $enhancers = array(
+      '_none_' => t('- None -'),
+      'multiselect' => t('Enhanced Multiselect'),
+    );
+
+    $entity_browser = $form_state->getTemporaryValue('wizard')['entity_browser'];
+
+    foreach ($entity_browser->getWidgets() as $uuid => $widget) {
+      $widget_class_name = get_class($widget);
+
+      if (substr($widget_class_name, -4, 4) === "View") {
+        $form['widgets']['table'][$uuid]['form']['enhancer'] = array(
+          '#type' => 'select',
+          '#title' => t('Select enhancer'),
+          '#default_value' => \Drupal::config('entity_browser_enhanced.widgets')->get($uuid, '_none_'),
+          '#options' => $enhancers,
+        );
+
+        $form['actions']['submit']['#submit'][] = 'entity_browser_enhanced_submit';
+      }
+    }
+  }
+  elseif (substr($form_id, 0, 15) === "entity_browser_"
+          && $form_id !== 'entity_browser_general_info_config_form'
+          && $form_id !== 'entity_browser_display_config_form'
+          && $form_id !== 'entity_browser_widget_selector_config_form'
+          && $form_id !== 'entity_browser_selection_display_config_form') {
+
+    // get the entity browser machine name from the form_id and retrieve its widgets
+    preg_match('#(?<=^entity_browser_).+(?=_form$)#', $form_id, $browser_name);
+    $widgets = \Drupal::config('entity_browser.browser.' . $browser_name[0])->get('widgets');
+
+    foreach($widgets as $uuid => $widget) {
+      $enhancer_id = \Drupal::config('entity_browser_enhanced.widgets')->get($uuid, '_none_');
+
+      // Multiselect enhancer.
+      if ($enhancer_id === 'multiselect') {
+        // Now we attach Entity Browser Enhanced multiselect library.
+        $form['#attached']['library'][] = 'entity_browser_enhanced/entity_browser_enhanced.multiselect';
+
+        $field_storage = $form_state->getStorage();
+        $field_cardinality = $field_storage['entity_browser']['validators']['cardinality']['cardinality'];
+
+        $form['#attached']['drupalSettings']['entity_browser_enhanced']['multiselect']['cardinality'] = $field_cardinality;
+
+        // Mark the form with entity-browser-enhanced multiselect classes.
+        $form['#attributes']['class'][] = 'entity-browser-enhanced';
+        $form['#attributes']['class'][] = 'multiselect';
+      }
+    }
+  }
+}
+
+/**
+ * Entity browser enhanced submit.
+ */
+function entity_browser_enhanced_submit(&$form, FormStateInterface $form_state) {
+  $entity_browser = $form_state->getTemporaryValue('wizard')['entity_browser'];
+
+  foreach ($entity_browser->getWidgets() as $uuid => $widget) {
+    $widget_class_name = get_class($widget);
+
+    if (substr($widget_class_name, -4, 4) === "View" && isset($form['widgets']['table'][$uuid]['form']['enhancer']['#value'])) {
+      \Drupal::service('config.factory')->getEditable('entity_browser_enhanced.widgets')
+        ->set($uuid, $form['widgets']['table'][$uuid]['form']['enhancer']['#value'])
+        ->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function entity_browser_enhanced_library_info_alter(&$libraries, $extension) {
+  // Removed the browser.style library which lightning media use as static code.
+  if ($extension == 'lightning_media' && isset($libraries['browser.styling'])) {
+    unset($libraries['browser.styling']);
+  }
+}

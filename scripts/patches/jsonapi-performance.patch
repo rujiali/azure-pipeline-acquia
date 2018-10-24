@@ -1,0 +1,102 @@
+diff --git a/src/Normalizer/JsonApiDocumentTopLevelNormalizer.php b/src/Normalizer/JsonApiDocumentTopLevelNormalizer.php
+index 5e8bb15..bce5fb4 100644
+--- a/src/Normalizer/JsonApiDocumentTopLevelNormalizer.php
++++ b/src/Normalizer/JsonApiDocumentTopLevelNormalizer.php
+@@ -15,6 +15,8 @@ use Drupal\jsonapi\Resource\EntityCollection;
+ use Drupal\jsonapi\LinkManager\LinkManager;
+ use Drupal\jsonapi\Resource\JsonApiDocumentTopLevel;
+ use Drupal\jsonapi\ResourceType\ResourceType;
++use Drupal\node\Entity\Node;
++use Drupal\paragraphs\Entity\Paragraph;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+@@ -207,12 +209,36 @@ class JsonApiDocumentTopLevelNormalizer extends NormalizerBase implements Denorm
+    *   The normalizer value.
+    */
+   public function buildNormalizerValue($data, $format = NULL, array $context = []) {
++
++    $cid = FALSE;
++    if ('auto' == $context['request']->query->get('model')) {
++      if ($data instanceof Node) {
++        $cid = 'ws-normalized-node-' . $data->get('nid')->value;
++        if ($response = \Drupal::cache()->get($cid)) {
++          return $response->data;
++        }
++      }
++      if ($data instanceof Paragraph) {
++        $cid = 'ws-normalized-paragraph-' . $data->get('id')->value;
++        if ($response = \Drupal::cache()->get($cid)) {
++          return $response->data;
++        }
++      }
++    }
++
+     if (empty($context['expanded'])) {
+       $context += $this->expandContext($context['request'], $context['resource_type']);
+     }
+ 
+     if ($data instanceof EntityReferenceFieldItemListInterface) {
+-      return $this->serializer->normalize($data, $format, $context);
++
++      // WorkSafe performance fix.
++      $response = $this->serializer->normalize($data, $format, $context);
++      if ($cid) {
++        \Drupal::cache()->set($cid, $response);
++      }
++      return $response;
++
+     }
+     $is_collection = $data instanceof EntityCollection;
+     $include_count = $context['resource_type']->includeCount();
+@@ -224,8 +250,15 @@ class JsonApiDocumentTopLevelNormalizer extends NormalizerBase implements Denorm
+       $context['total_count'] = $is_collection ? $data->getTotalCount() : 1;
+     }
+     $serializer = $this->serializer;
+-    $normalizer_values = array_map(function ($entity) use ($format, $context, $serializer) {
+-      return $serializer->normalize($entity, $format, $context);
++    $normalizer_values = array_map(function ($entity) use ($format, $context, $serializer, $cid) {
++
++      // WorkSafe performance fix.
++      $response = $serializer->normalize($entity, $format, $context);
++      if ($cid) {
++        \Drupal::cache()->set($cid, $response);
++      }
++      return $response;
++
+     }, $entities);
+ 
+     $link_context = [
+@@ -254,15 +287,23 @@ class JsonApiDocumentTopLevelNormalizer extends NormalizerBase implements Denorm
+   protected function expandContext(Request $request, ResourceType $resource_type) {
+     // Translate ALL the includes from the public field names to the internal.
+     $includes = array_filter(explode(',', $request->query->get('include')));
+-    $public_includes = array_map(function ($include_str) use ($resource_type) {
+-      $resolved = $this->fieldResolver->resolveInternal(
+-        $resource_type->getEntityTypeId(),
+-        $resource_type->getBundle(),
+-        trim($include_str)
+-      );
+-      // We don't need the entity information for the includes. Clean it.
+-      return preg_replace('/\.entity(:[a-z_]+)?\./', '.', $resolved);
+-    }, $includes);
++
++    // WorkSafe, add this to avoid extra processing of includes when we are controlling it.
++    if (count($includes) > 100) {
++      $public_includes = $includes;
++    }
++    else {
++      $public_includes = array_map(function ($include_str) use ($resource_type) {
++        $resolved = $this->fieldResolver->resolveInternal(
++          $resource_type->getEntityTypeId(),
++          $resource_type->getBundle(),
++          trim($include_str)
++        );
++        // We don't need the entity information for the includes. Clean it.
++        return preg_replace('/\.entity(:[a-z_]+)?\./', '.', $resolved);
++      }, $includes);
++    }
++
+     // Build the expanded context.
+     $context = [
+       'account' => NULL,

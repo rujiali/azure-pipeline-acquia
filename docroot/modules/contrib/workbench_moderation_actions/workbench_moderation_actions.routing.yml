@@ -1,0 +1,7 @@
+workbench_moderation_actions.state_change:
+  path: /workbench_moderation_actions/state_change/{entity_type_id}/{entity_id}/{from}/{to}
+  defaults:
+    _controller: \Drupal\workbench_moderation_actions\Controller\StateChange::change
+  requirements:
+    _custom_access: \Drupal\workbench_moderation_actions\Controller\StateChange::access
+    _csrf_token: 'TRUE'

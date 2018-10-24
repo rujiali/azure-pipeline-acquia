@@ -1,0 +1,6 @@
+{
+  "name": "drupal/paragraphs_edit",
+  "description": "Allows users to edit/clone and delete paragraphs.",
+  "type": "drupal-module",
+  "license": "GPL-2.0+"
+}

@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Allows users to edit, clone and delete paragraphs.
+ */
+
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\paragraphs_edit\Form\ParagraphCloneForm;
+use Drupal\paragraphs_edit\Form\ParagraphDeleteForm;
+use Drupal\paragraphs_edit\Form\ParagraphEditForm;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_entity_type_build().
+ *
+ * @param \Drupal\Core\Entity\EntityTypeInterface[] $entity_types
+ */
+function paragraphs_edit_entity_type_build(array &$entity_types) {
+  $entity_types['paragraph']->setFormClass('entity_edit', ParagraphEditForm::class);
+
+  $entity_types['paragraph']->setFormClass('entity_clone', ParagraphCloneForm::class);
+
+  $entity_types['paragraph']->setFormClass('entity_delete', ParagraphDeleteForm::class);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for paragraph entities.
+ */
+function paragraphs_edit_paragraph_view_alter(array &$build, ParagraphInterface $entity, EntityViewDisplayInterface $display) {
+  // Skip adding contextual links if the Paragraph is in a QuickEdit form context
+  // to avoid causing conflicts with Quickedit JS
+  if (\Drupal::routeMatch()->getRouteName() == 'quickedit.field_form') {
+    return;
+  }
+
+  // Skip adding contextual links, if the Paragraph is in a AdminRoute context.
+  // That can happen on forms with Paragraph form display setting
+  // "Edit mode: Preview" enabled.
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  $root_parent = \Drupal::service('paragraphs_edit.lineage.inspector')->getRootParent($entity);
+  if ($root_parent) {
+    $build['#contextual_links']['paragraph'] = [
+      'route_parameters' => [
+        'root_parent_type' => $root_parent->getEntityTypeId(),
+        'root_parent' => $root_parent->id(),
+        'paragraph' => $entity->id(),
+      ],
+      'metadata' => ['changed' => $root_parent->getChangedTime()],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for paragraph.html.twig.
+ *
+ * @see contextual_preprocess()
+ * @see template_preprocess_paragraph()
+ */
+function paragraphs_edit_preprocess_paragraph(&$variables) {
+  // Paragraph templates don't normally print the title_suffix, so add the
+  // contextual links to the content render array.
+  if (isset($variables['title_suffix']['contextual_links'])) {
+    $variables['content']['contextual_links'] = $variables['title_suffix']['contextual_links'];
+    $variables['content']['contextual_links']['#weight'] = -100;
+  }
+}

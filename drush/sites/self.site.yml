@@ -1,0 +1,44 @@
+vm:
+  host: umami.vm
+  options:
+    alias-path: /var/www/drupalvm/docroot/drush
+    local: true
+  command:
+    core:
+      rsync:
+        options:
+          exclude-paths: 'css:js:php:config*:styles'
+          progress: true
+  paths:
+    dump-dir: ~/backups/drush.dbdumps
+    drush-script: /var/www/drupalvm/vendor/bin/drush
+    files: sites/default/files
+  root: /var/www/drupalvm/docroot
+  uri: worksafe.vm
+  user: vagrant
+  ssh:
+    options: '-o "SendEnv PHP_IDE_CONFIG PHP_OPTIONS XDEBUG_CONFIG" -o PasswordAuthentication=no -i "~/.vagrant.d/insecure_private_key"'
+dev:
+  host: jldemozrjwwdjxcp.devcloud.acquia-sites.com
+  options:
+    ac-env: dev
+    ac-realm: devcloud
+    ac-site: jldemo
+    alias-path: /var/www/drupalvm/docroot/drush
+    local: true
+  command:
+    core:
+      rsync:
+        options:
+          exclude-paths: 'css:js:php:config*:styles'
+          progress: true
+  paths:
+    dump-dir: /home/jldemo.dev/drush.dbdumps
+    drush-script: /var/www/html/jldemo.dev/vendor/bin/drush
+    files: sites/default/files
+  root: /var/www/html/jldemo.dev/docroot
+  uri: jldemozrjwwdjxcp.devcloud.acquia-sites.com
+  user: jldemo.dev
+  ssh:
+    options: '-o LogLevel=QUIET'
+

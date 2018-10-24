@@ -1,0 +1,20 @@
+diff --git a/solr-conf/4.x/schema.xml b/solr-conf/4.x/schema.xml
+index 49133cc..95fb427 100644
+--- a/solr-conf/4.x/schema.xml
++++ b/solr-conf/4.x/schema.xml
+@@ -187,6 +187,7 @@
+         <filter class="solr.LowerCaseFilterFactory"/>
+         <filter class="solr.SnowballPorterFilterFactory" language="English" protected="protwords.txt"/>
+         <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
++        <filter class="solr.EdgeNGramFilterFactory" maxGramSize="25" minGramSize="2"/>
+       </analyzer>
+       <analyzer type="query">
+         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+@@ -247,6 +248,7 @@
+                 splitOnCaseChange="0"/>
+         <filter class="solr.LengthFilterFactory" min="2" max="100" />
+         <filter class="solr.LowerCaseFilterFactory"/>
++        <filter class="solr.EdgeNGramFilterFactory" maxGramSize="25" minGramSize="2"/>
+       </analyzer>
+     </fieldType>
+ 

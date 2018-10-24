@@ -1,0 +1,20 @@
+diff --git a/includes/preflight.inc b/includes/preflight.inc
+index 116fd3e..667ad65 100644
+--- a/includes/preflight.inc
++++ b/includes/preflight.inc
+@@ -231,10 +231,13 @@ function drush_preflight() {
+   _drush_preflight_base_environment();
+ 
+   // Setup global alias_paths[] in context system.
+-  if (!drush_get_option('local')) {
++  // simon@hobbs.id.au: see ./drush/drushrc.php.
++  if (FALSE && !drush_get_option('local')) {
+     _drush_preflight_alias_path();
+   }
+-  if (!drush_get_option('local')) {
++
++  // simon@hobbs.id.au: see ./drush/drushrc.php.
++  if (FALSE && !drush_get_option('local')) {
+     // Load a drushrc.php file in the drush.php's directory.
+     drush_load_config('drush');
+ 

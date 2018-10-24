@@ -1,0 +1,6 @@
+auto_entitylabel.settings:
+  title: 'Automatic label'
+  description: 'Allows hiding of entity label fields and automatic label creation.'
+  parent: system.admin_structure
+  route_name: auto_entitylabel.settings
+  weight: 100

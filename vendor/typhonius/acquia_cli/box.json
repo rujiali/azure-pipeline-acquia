@@ -1,0 +1,21 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "default.acquiacli.yml",
+        "acquiacli.yml"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["Tests"],
+            "in": ["vendor", "bin"]
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/acquiacli",
+    "output": "acquiacli.phar",
+    "stub": true
+}

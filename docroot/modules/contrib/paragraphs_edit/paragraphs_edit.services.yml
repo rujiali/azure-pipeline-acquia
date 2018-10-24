@@ -1,0 +1,6 @@
+services:
+  paragraphs_edit.lineage.inspector:
+    class: Drupal\paragraphs_edit\ParagraphLineageInspector
+  paragraphs_edit.lineage.revisioner:
+    class: Drupal\paragraphs_edit\ParagraphLineageRevisioner
+    arguments: ['@paragraphs_edit.lineage.inspector', '@entity_type.manager']

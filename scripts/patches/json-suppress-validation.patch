@@ -1,0 +1,14 @@
+diff --git a/src/EventSubscriber/ResourceResponseSubscriber.php b/src/EventSubscriber/ResourceResponseSubscriber.php
+index ed4385e..0fe8f76 100644
+--- a/src/EventSubscriber/ResourceResponseSubscriber.php
++++ b/src/EventSubscriber/ResourceResponseSubscriber.php
+@@ -169,7 +169,8 @@ class ResourceResponseSubscriber implements EventSubscriberInterface {
+     $this->renderResponseBody($request, $response, $this->serializer, $format);
+     $event->setResponse($this->flattenResponse($response, $request));
+
+-    $this->doValidateResponse($response, $request);
++    // @todo try remove this when https://www.drupal.org/project/jsonapi_extras/issues/2958370 is resolvd - simon@today.design
++    // $this->doValidateResponse($response, $request);
+   }
+
+   /**

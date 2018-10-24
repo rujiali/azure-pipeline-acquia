@@ -1,0 +1,14 @@
+type: module
+name: 'Search API location views'
+description: 'Adds Views integration for the Search API Location module.'
+package: Search
+# core: 8.x
+dependencies:
+  - search_api
+  - search_api_location
+
+# Information added by Drupal.org packaging script on 2018-06-09
+version: '8.x-1.0-alpha1'
+core: '8.x'
+project: 'search_api_location'
+datestamp: 1528532586

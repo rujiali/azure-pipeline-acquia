@@ -1,0 +1,13 @@
+name: Workbench access test
+description: Test code for workbench access
+type: module
+# core: 8.x
+hidden: true
+dependencies:
+  - workbench_access
+
+# Information added by Drupal.org packaging script on 2018-04-16
+version: '8.x-1.0-beta2'
+core: '8.x'
+project: 'workbench_access'
+datestamp: 1523902995

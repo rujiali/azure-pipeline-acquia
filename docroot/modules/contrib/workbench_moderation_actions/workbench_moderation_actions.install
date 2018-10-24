@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\system\Entity\Action;
+use Drupal\workbench_moderation_actions\Plugin\Deriver\StateChangeDeriver;
+
+/**
+ * Implements hook_install().
+ */
+function workbench_moderation_actions_install() {
+  // Remove the publish/unpublished actions.
+  if ($action = Action::load('node_publish_action')) {
+    $action->delete();
+  }
+  if ($action = Action::load('node_unpublish_action')) {
+    $action->delete();
+  }
+
+  $deriver = StateChangeDeriver::create(\Drupal::getContainer(), 'state_change');
+  foreach ($deriver->getDerivativeDefinitions([]) as $key => $definition) {
+    $plugin_id = 'state_change:' . $key;
+    Action::create([
+      'id' => str_replace(':', '__', $plugin_id),
+      'label' => $definition['label'],
+      'type' => $definition['type'],
+      'plugin' => $plugin_id,
+      'configuration' => [],
+    ])->save();
+  }
+}

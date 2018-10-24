@@ -1,0 +1,6 @@
+services:
+  access_check.edit_content:
+    class: Drupal\workbench_moderation_state_access\Access\EditContentCheck
+    arguments: ['@workbench_moderation.moderation_information']
+    tags:
+      - { name: access_check, applies_to: _entity_access }

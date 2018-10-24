@@ -1,0 +1,13 @@
+name: Workbench moderation state acces
+type: module
+description: Provides extra entity permissions for content in workbench moderation states.
+# core: 8.x
+package: Other
+dependencies:
+  - workbench_moderation
+
+# Information added by Drupal.org packaging script on 2016-12-04
+version: '8.x-1.0'
+core: '8.x'
+project: 'workbench_moderation_state_access'
+datestamp: 1480892289

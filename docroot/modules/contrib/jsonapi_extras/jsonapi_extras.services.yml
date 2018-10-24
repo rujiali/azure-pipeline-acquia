@@ -1,0 +1,43 @@
+services:
+  serializer.normalizer.field_item.jsonapi_extras:
+    class: Drupal\jsonapi_extras\Normalizer\FieldItemNormalizer
+    arguments:
+      - '@serializer.normalizer.field_item.jsonapi'
+      - '@entity_type.manager'
+      - '@plugin.manager.resource_field_enhancer'
+    tags:
+      - { name: normalizer, priority: 1025, format: api_json }
+
+  serializer.normalizer.entity.jsonapi_extras:
+    class: Drupal\jsonapi_extras\Normalizer\ContentEntityNormalizer
+    parent: serializer.normalizer.entity.jsonapi
+    calls:
+      - [setSerializer, ['@jsonapi.serializer_do_not_use_removal_imminent']]
+    tags:
+      - { name: normalizer, priority: 1022, format: api_json }
+  serializer.normalizer.config_entity.jsonapi_extras:
+    class: Drupal\jsonapi_extras\Normalizer\ConfigEntityNormalizer
+    parent: serializer.normalizer.config_entity.jsonapi
+    tags:
+      - { name: normalizer, priority: 1022, format: api_json }
+
+  plugin.manager.resource_field_enhancer:
+    class: Drupal\jsonapi_extras\Plugin\ResourceFieldEnhancerManager
+    parent: default_plugin_manager
+
+  # Event subscribers.
+  jsonapi_extras.config_subscriber:
+    class: Drupal\jsonapi_extras\EventSubscriber\ConfigSubscriber
+    arguments: ['@kernel', '@router.builder']
+    tags:
+      - { name: event_subscriber }
+
+  jsonapi_extras.entity.to_jsonapi:
+    class: Drupal\jsonapi_extras\EntityToJsonApi
+    arguments: ['@jsonapi.serializer_do_not_use_removal_imminent', '@jsonapi.resource_type.repository', '@current_user', '@request_stack', '%jsonapi.base_path%']
+
+  jsonapi.serializer_do_not_use_removal_imminent.jsonapi_extras:
+    class: \Drupal\jsonapi_extras\SerializerDecorator
+    public: false
+    decorates: jsonapi.serializer_do_not_use_removal_imminent
+    arguments: ['@jsonapi.serializer_do_not_use_removal_imminent.jsonapi_extras.inner']

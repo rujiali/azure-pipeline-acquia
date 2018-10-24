@@ -1,0 +1,7 @@
+{
+    "name": "acquia/lightning_core",
+    "description": "Shared functionality for the Lightning distribution.",
+    "type": "drupal-module",
+    "license": "GPL-2.0+"
+}
+

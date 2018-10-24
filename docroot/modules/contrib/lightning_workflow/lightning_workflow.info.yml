@@ -1,0 +1,16 @@
+name: 'Lightning Workflow'
+# core: 8.x
+type: module
+description: 'Tools to improve your content workflow.'
+package: Lightning
+dependencies:
+  - content_moderation
+  - lightning_core
+components:
+  - lightning_scheduler
+
+# Information added by Drupal.org packaging script on 2018-04-26
+version: '8.x-2.0-rc1'
+core: '8.x'
+project: 'lightning_workflow'
+datestamp: 1524755885

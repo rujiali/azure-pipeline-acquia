@@ -1,0 +1,24 @@
+services:
+  menu_item_extras.menu_link_tree_handler:
+    class: Drupal\menu_item_extras\Service\MenuLinkTreeHandler
+    arguments: ['@entity_type.manager', '@entity.repository']
+  menu_item_extras.menu_link_content_helper:
+    class: Drupal\menu_item_extras\Service\MenuLinkContentService
+    arguments: ['@entity_type.manager', '@entity.definition_update_manager', '@entity_field.manager', '@field_storage_definition.listener', '@entity.last_installed_schema.repository', '@database']
+  menu_item_extras.update:
+    class: Drupal\menu_item_extras\Service\UpdateHelper
+#    arguments: ['@entity_type.manager', '@entity.definition_update_manager', '@entity_field.manager', '@field_storage_definition.listener', '@entity.last_installed_schema.repository', '@database']
+# @todo: Deprecate menu_item_extras.route_subscriber service after https://www.drupal.org/project/drupal/issues/2923429
+  menu_item_extras.route_subscriber:
+    class: Drupal\menu_item_extras\Routing\RouteSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+  menu_item_extras.uninstall_validator:
+    class: Drupal\menu_item_extras\MenuItemExtrasUninstallValidator
+    tags:
+      - { name: module_install.uninstall_validator }
+    arguments: ['@database', '@string_translation']
+    lazy: true
+  menu_item_extras.utility:
+    class: Drupal\menu_item_extras\Utility\Utility

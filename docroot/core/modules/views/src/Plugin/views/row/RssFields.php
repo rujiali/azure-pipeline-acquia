@@ -141,7 +141,13 @@ class RssFields extends RowPluginBase {
     $item->title = $this->getField($row_index, $this->options['title_field']);
     // @todo Views should expect and store a leading /. See:
     //   https://www.drupal.org/node/2423913
-    $item->link = Url::fromUserInput('/' . $this->getField($row_index, $this->options['link_field']))->setAbsolute()->toString();
+    $link_value = $this->getField($row_index, $this->options['link_field']);
+    if (strpos($link_value, 'http') === 0) {
+      $item->link = $link_value;
+    }
+    else {
+      $item->link = Url::fromUserInput($link_value)->setAbsolute()->toString();
+    }
 
     $field = $this->getField($row_index, $this->options['description_field']);
     $item->description = is_array($field) ? $field : ['#markup' => $field];
@@ -158,9 +164,9 @@ class RssFields extends RowPluginBase {
     $item_guid = $this->getField($row_index, $this->options['guid_field_options']['guid_field']);
     if ($this->options['guid_field_options']['guid_field_is_permalink']) {
       $guid_is_permalink_string = 'true';
-      // @todo Enforce GUIDs as system-generated rather than user input? See
-      //   https://www.drupal.org/node/2430589.
-      $item_guid = Url::fromUserInput('/' . $item_guid)->setAbsolute()->toString();
+      if (strpos($item_guid, 'http') !== 0) {
+        $item->link = Url::fromUserInput($link_value)->setAbsolute()->toString();
+      }
     }
     $item->elements[] = [
       'key' => 'guid',

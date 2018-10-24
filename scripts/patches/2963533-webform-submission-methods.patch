@@ -1,0 +1,22 @@
+diff --git a/src/Plugin/rest/resource/WebformSubmitResource.php b/src/Plugin/rest/resource/WebformSubmitResource.php
+index 1dfb54e..689412c 100644
+--- a/src/Plugin/rest/resource/WebformSubmitResource.php
++++ b/src/Plugin/rest/resource/WebformSubmitResource.php
+@@ -77,7 +77,7 @@ class WebformSubmitResource extends ResourceBase {
+ 
+     if ($is_open === TRUE) {
+       // Validate submission.
+-      $errors = WebformSubmissionForm::validateValues($values);
++      $errors = WebformSubmissionForm::validateFormValues($values);
+ 
+       // Check there are no validation errors.
+       if (!empty($errors)) {
+@@ -86,7 +86,7 @@ class WebformSubmitResource extends ResourceBase {
+       }
+       else {
+         // Return submission ID.
+-        $webform_submission = WebformSubmissionForm::submitValues($values);
++        $webform_submission = WebformSubmissionForm::submitFormValues($values);
+         return new ModifiedResourceResponse(['sid' => $webform_submission->id()]);
+       }
+     }

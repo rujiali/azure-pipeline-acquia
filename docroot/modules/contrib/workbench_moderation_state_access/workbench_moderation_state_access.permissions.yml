@@ -1,0 +1,2 @@
+permission_callbacks:
+  - \Drupal\workbench_moderation_state_access\Permissions::editPermissions
