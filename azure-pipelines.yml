@@ -20,5 +20,6 @@ steps:
   displayName: 'Use PHP version $(phpVersion)'
 
 - script: composer self-update
+  displayName: 'composer self-update'
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
