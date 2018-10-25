@@ -53,7 +53,7 @@ steps:
     git fetch acquia
     git add .
     git commit -m 'Release1'
-    git tag 'release1
+    git tag release1
     git push acquia master -f --tags
   displayName: 'Push to Acquia'
 
