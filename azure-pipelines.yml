@@ -47,11 +47,13 @@ steps:
   displayName: 'composer install'
 
 - script: |
+    git config --global user.email "oasislrjjrj@gmail.com"
+    git config --global user.name "Joshua Li"
+    git remote add acquia jldemo@svn-5468.devcloud.hosting.acquia.com:jldemo.git
+    git fetch acquia
     git add .
-    git commit -m 'Release'
-    git tag release1
-    git push origin master
-    git push tag release1
+    git commit -m 'Release1'
+    git push acquia release1 -f --tags
   displayName: 'Push to Acquia'
 
 - script: ./vendor/bin/acquiacli preprod:deploy jldemo.dev dev release1 true
