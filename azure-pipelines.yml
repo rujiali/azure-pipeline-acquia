@@ -29,9 +29,10 @@ steps:
   displayName: 'Move cli data.'
 
 - script: |
-    sudo rm -rf .gitignore
-    sudo cp .gitignore-prod .gitignore
+    rm -rf .gitignore
+    cp .gitignore-prod ./.gitignore
   displayName: 'Rename git ignore file.'
+
 - script: |
     sudo apt-get remove composer
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -43,4 +44,3 @@ steps:
   displayName: 'Update composer'
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
-
