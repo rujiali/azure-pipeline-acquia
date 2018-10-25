@@ -42,5 +42,28 @@ steps:
     sudo mv composer.phar /usr/local/bin/composer
     composer --version
   displayName: 'Update composer'
+
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
+
+- script: |
+    git add .
+    git commit -m 'Release'
+    git tag release1
+    git push origin master
+    git push tag release1
+  displayName: 'Push to Acquia'
+
+- script: ./vendor/bin/acquiacli preprod:deploy jldemo.dev dev release1 true
+  displayName: 'Deploy to Acquia'
+
+- script: |
+    ./vendor/bin/drush state-set system.maintenance_mode 1
+    ./vendor/bin/drush cr
+    ./vendor/bin/drush updb
+    ./vendor/bin/drush cim ../config/default
+    ./vendor/bin/drush cr
+    ./vendor/bin/drush state-set system.maintenance_mode 0
+  displayName: 'Update configuration'
+
+
