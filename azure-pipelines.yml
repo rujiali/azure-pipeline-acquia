@@ -53,19 +53,20 @@ steps:
     git fetch acquia
     git add .
     git commit -m 'Release1'
-    git push acquia release1 -f --tags
+    git tag 'release1
+    git push acquia master -f --tags
   displayName: 'Push to Acquia'
 
 - script: ./vendor/bin/acquiacli preprod:deploy jldemo.dev dev release1 true
   displayName: 'Deploy to Acquia'
 
 - script: |
-    ./vendor/bin/drush state-set system.maintenance_mode 1
-    ./vendor/bin/drush cr
-    ./vendor/bin/drush updb
-    ./vendor/bin/drush cim ../config/default
-    ./vendor/bin/drush cr
-    ./vendor/bin/drush state-set system.maintenance_mode 0
+    ./vendor/bin/drush @dev state-set system.maintenance_mode 1
+    ./vendor/bin/drush @dev cr
+    ./vendor/bin/drush @dev updb
+    ./vendor/bin/drush @dev cim ../config/default
+    ./vendor/bin/drush @dev cr
+    ./vendor/bin/drush @dev state-set system.maintenance_mode 0
   displayName: 'Update configuration'
 
 
