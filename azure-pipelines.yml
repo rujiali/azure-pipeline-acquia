@@ -23,9 +23,9 @@ steps:
 # Download a secure file to a temporary location on the build or release agent
 - task: DownloadSecureFile@1
   inputs:
-    secureFile:
+    secureFile: acquiacli.yml
 
-- script: mv $(Agent.TempDirectory)/* ./
+- script: mv $(Agent.TempDirectory)/acquiacli.yml ./
   displayName: 'Move cli data.'
 
 - script: |
