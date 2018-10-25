@@ -1,0 +1,6 @@
+# Ignore paths that contain user-generated content.
+docroot/files
+docroot/sites/*/files
+docroot/sites/*/private
+.idea
+acquiacli.yml
