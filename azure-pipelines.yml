@@ -51,7 +51,6 @@ steps:
     git config --global user.name "Joshua Li"
     git remote add acquia jldemo@svn-5468.devcloud.hosting.acquia.com:jldemo.git
     git fetch acquia
-    git checkout -b release1
     git add .
     git commit -m 'Release1'
     git tag release1
