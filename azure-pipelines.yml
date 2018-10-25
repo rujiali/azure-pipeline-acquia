@@ -19,6 +19,15 @@ steps:
     php -version
   displayName: 'Use PHP version $(phpVersion)'
 
+# Download Secure File
+# Download a secure file to a temporary location on the build or release agent
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile:
+
+- script: mv $(Agent.TempDirectory)/* ./
+  displayName: 'Move cli data.'
+
 - script: |
     sudo apt-get remove composer
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
