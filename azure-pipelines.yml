@@ -23,7 +23,7 @@ steps:
 # Install an SSH key prior to a build or release
 - task: InstallSSHKey@0
   inputs:
-    hostName: staging-26860.prod.hosting.acquia.com
+    hostName: svn-5468.devcloud.hosting.acquia.com
     sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCvFwUM59KyCw/fMka6aNcbCEP0jpnQ4IYeY73GvM+VEPjKMZK+GZ5uIO+fmvFU2DJam4jBRaSnRk7hjFWfTRlGrt+3VklsV/lehYKgt/jKjp8tKtuTRUursX7guQhx1NUtdcjU9M2Ko1hTx/mxgNRPQPUp8ikZLjvb1HOxZzpLZVVvePBshskE08zMTyE3jOh1fpWmiRAyPwGf6BLRhMHqyAgmMJeQd0QVlvYZGRDGrMHERNGNdwb+7UxYjaT3Q5Jotx2c5QKnf73CyDpzwbHTeBK/+TXN1XLMMgJwbVFCPgZGSNKN0DymJB840/Z1LUDGMHESddyqHwXPNWY9zebxATG/PcikAikHF7T7t2TcCZQj2T8XwbpFLhA6d2awVF0WiWH+RStIXXPtCVkDWM7OQMUMVmse5aNbPw4tO4VnlSvoyau85vBi+d62KYcTY530WO//jIfNS3HAAaqZoHMqidH109NWT0oNXeqDfP7QDEvE90mlimBUECXYJk3Ve0CokreF7Fig5KmKP3h8Dx/8elccEEoI5zU9D/IAwXjKh50kqMQPmYIxno06Agi189qfO8Hi3yYJA7XmxnadLgPf5pRuPviPfUrP2N2nM9tKmVYSUt2O+jdndbCRwkpg28h102crljvLwzpF2fXqDM1e9lPtx9jXgEfwibJtgOOVMw== joshua.li@AMAC02W50L5HTDG'
     sshPassphrase: 'password'
     sshKeySecureFile: pipelines
